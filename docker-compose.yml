@@ -46,3 +46,15 @@ services:
 
     selenium:
         image: selenium/standalone-chrome:latest
+
+    vite:
+        build: ./docker/php
+        volumes:
+            - ./src:/var/www/
+        ports:
+            - "5173:5173"
+        environment:
+            - HOST=0.0.0.0
+        command: npm run dev
+        depends_on:
+            - php
