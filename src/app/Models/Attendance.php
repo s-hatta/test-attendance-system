@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
 {
+    const STATUS_OFF_DUTY = 0;
+    const STATUS_WORKING = 1;
+    const STATUS_BREAK = 2;
+    const STATUS_LEFT = 3;
+    
     protected $fillable = [
         'user_id',
         'date',
@@ -21,11 +26,22 @@ class Attendance extends Model
     
     public function breakTime()
     {
-        return $this->hasMany(BreakTime:class);
+        return $this->hasMany(BreakTime::class);
     }
     
     public function attendanceCorrection()
     {
         return $this->hasOne(AttendanceCorrection::class);
+    }
+    
+    public function getStatusMessage()
+    {
+        switch( $this->status ) {
+            case self::STATUS_OFF_DUTY  :return '勤務外';
+            case self::STATUS_WORKING   :return '出勤中';
+            case self::STATUS_BREAK     :return '休憩中';
+            case self::STATUS_LEFT      :return '退勤済';
+            default                     :return '';
+        }
     }
 }
