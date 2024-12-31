@@ -9,5 +9,6 @@ Route::get('/', [HomeController::class, 'index']);
 
 /* 一般ユーザー用ルート */
 Route::name('user.')->group(function () {
+    Route::get('/register', [User\RegisterController::class, 'create'])->name('register');
     Route::get('/login', [User\LoginController::class, 'create'])->name('login');
 });
