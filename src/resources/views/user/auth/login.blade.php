@@ -10,5 +10,5 @@
         <input class="border border-solid border-black" type="password" name="password">
         <button class="bg-black text-white" type="submit">ログインする</button>
     </form>
-    <a href="">会員登録はこちら</a>
+    <a href="{{route('user.register')}}">会員登録はこちら</a>
 @endsection
