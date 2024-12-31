@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User;
+use App\Http\Controllers\Admin;
 
 /* ホームページ */
 Route::get('/', [HomeController::class, 'index']);
@@ -18,4 +19,10 @@ Route::name('user.')->group(function () {
     Route::middleware('auth:user')->group(function () {
         Route::get('/attendance', [User\TimeCardController::class, 'index'])->name('timecard');
     });
+});
+
+/* 管理者用ルート */
+Route::name('admin.')->prefix('/admin')->group(function () {
+    Route::get('/login', [Admin\LoginController::class, 'create'])->name('login');
+    Route::post('/login', [Admin\LoginController::class, 'store']);
 });
