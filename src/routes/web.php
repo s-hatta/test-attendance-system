@@ -17,6 +17,7 @@ Route::name('user.')->group(function () {
     Route::post('/login', [User\LoginController::class, 'store']);
     
     Route::middleware('auth:user')->group(function () {
+        Route::post('/logout', [User\LoginController::class, 'destroy'])->name('logout');
         Route::get('/attendance', [User\TimeCardController::class, 'index'])->name('timecard');
     });
 });
@@ -25,4 +26,8 @@ Route::name('user.')->group(function () {
 Route::name('admin.')->prefix('/admin')->group(function () {
     Route::get('/login', [Admin\LoginController::class, 'create'])->name('login');
     Route::post('/login', [Admin\LoginController::class, 'store']);
+    
+    Route::middleware('auth:admin')->group(function () {
+        Route::post('/logout', [Admin\LoginController::class, 'destroy'])->name('logout');
+    });
 });
