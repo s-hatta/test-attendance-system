@@ -31,6 +31,9 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::createUsersUsing(CreateNewUser::class);
         
+        Fortify::registerView(function () {
+            return view('user.auth.register');
+        });
         Fortify::loginView(function () {
             return view('user.auth.login');
         });
