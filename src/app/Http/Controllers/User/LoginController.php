@@ -52,7 +52,7 @@ class LoginController extends Controller
     /**
      * Attempt to authenticate a new session.
      *
-     * @param  \Laravel\Fortify\Http\Requests\LoginRequest  $request
+     * @param  \App\Http\Requests\LoginRequest  $request
      * @return mixed
      */
     public function store(LoginRequest $request)
