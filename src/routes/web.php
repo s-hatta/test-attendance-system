@@ -1,7 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User;
 
-Route::get('/', function () {
-    return view('welcome');
+/* ホームページ */
+Route::get('/', [HomeController::class, 'index']);
+
+/* 一般ユーザー用ルート */
+Route::name('user.')->group(function () {
+    Route::get('/login', [User\LoginController::class, 'create'])->name('login');
 });
