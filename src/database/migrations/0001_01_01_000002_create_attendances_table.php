@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->timestamp('clock_in_at')->nullable();
             $table->timestamp('clock_out_at')->nullable();
+            $table->text('remark')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();
         });

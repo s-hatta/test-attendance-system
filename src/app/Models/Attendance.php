@@ -16,6 +16,7 @@ class Attendance extends Model
         'date',
         'clock_in_at',
         'clock_out_at',
+        'remark',
         'status',
     ];
     
