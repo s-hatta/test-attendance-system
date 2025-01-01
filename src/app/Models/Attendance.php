@@ -44,4 +44,19 @@ class Attendance extends Model
             default                     :return '';
         }
     }
+    
+    /* 年月を指定 */
+    public function scopeByMonth($query, $year, $month)
+    {
+        return $query->whereYear('date', $year)
+            ->whereMonth('date', $month);
+    }
+    
+    /* 年月日を指定 */
+    public function scopeByDay($query, $year, $month, $day)
+    {
+        return $query->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->whereDay('date', $day);
+    }
 }
