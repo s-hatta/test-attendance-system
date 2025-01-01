@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Pipeline;
-use Laravel\Fortify\Actions\AttemptToAuthenticate;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Actions\CanonicalizeUsername;
 use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
 use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
@@ -17,6 +17,7 @@ use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 use App\Http\Requests\LoginRequest;
+use App\Actions\Admin\AttemptToAuthenticate;
 
 class LoginController extends Controller
 {
