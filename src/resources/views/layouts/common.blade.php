@@ -7,8 +7,7 @@
     <title>@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body>
-    <body>
+<body class='bg-[#f0eff2]''>
     @include('parts.header')
     <main class="mt-20">
         @yield('content')
