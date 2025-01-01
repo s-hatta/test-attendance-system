@@ -17,7 +17,7 @@
                     <a href="{{route('admin.correction.index')}}" class="mx-5 text-2xl text-white hover:text-gray-300">申請一覧</a>
                     <form method="POST" action="{{ route('admin.logout') }}" class="inline">
                         @csrf
-                        <button type="submit" class="ml-5 text-2xl text-white hover:text-gray-300">>ログアウト</button>
+                        <button type="submit" class="ml-5 text-2xl text-white hover:text-gray-300">ログアウト</button>
                     </form>
                 @elseif (Auth::guard('user')->check())
                     {{-- 一般ユーザー用メニュー --}}
