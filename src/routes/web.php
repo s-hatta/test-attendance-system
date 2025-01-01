@@ -21,6 +21,10 @@ Route::name('user.')->group(function () {
     Route::middleware('auth:user')->group(function () {
         Route::post('/logout', [User\LoginController::class, 'destroy'])->name('logout');
         Route::get('/attendance', [User\TimeCardController::class, 'index'])->name('timecard');
+        Route::post('/attendance/clock-in', [User\TimeCardController::class, 'clockIn'])->name('timecard.clockIn');
+        Route::post('/attendance/clock-end', [User\TimeCardController::class, 'clockOut'])->name('timecard.clockOut');
+        Route::post('/attendance/break-start', [User\TimeCardController::class, 'startBreak'])->name('timecard.startBreak');
+        Route::post('/attendance/break-end', [User\TimeCardController::class, 'endBreak'])->name('timecard.endBreak');
         
         Route::get('/attendance/list', [User\AttendanceController::class, 'index'])->name('attendance.index');
         Route::get('/attendance/{id}', [User\AttendanceController::class, 'show'])->name('attendance.show');
