@@ -2,7 +2,7 @@
 @section('title','ログイン（管理者）')
 
 @section('content')
-    <form method="POST" method="route{{'admin.login'}}">
+    <form method="POST" action="{{route('admin.login')}}">
         @csrf
         <p>メールアドレス</p>
         <p>{{$errors->first('email')}}</p>
