@@ -12,6 +12,9 @@ class HomeController extends Controller
         if (Auth::guard('user')->check()) {
             return redirect()->route('user.timecard');
         }
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.attendance.index');
+        }
         return redirect()->route('user.login');
     }
 }
