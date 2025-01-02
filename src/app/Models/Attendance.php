@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\AttendanceStatus;
 
 class Attendance extends Model
 {
@@ -20,6 +21,10 @@ class Attendance extends Model
         'status',
     ];
     
+    protected $casts = [
+        'status' => AttendanceStatus::class,
+    ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -30,15 +35,9 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
     
-    public function getStatusMessage()
+    public function getStatusMessageAttribute(): string
     {
-        switch( $this->status ) {
-            case self::STATUS_OFF_DUTY  :return '勤務外';
-            case self::STATUS_WORKING   :return '出勤中';
-            case self::STATUS_BREAK     :return '休憩中';
-            case self::STATUS_LEFT      :return '退勤済';
-            default                     :return '';
-        }
+        return $this->status->getMessage();
     }
     
     /* 年月を指定 */

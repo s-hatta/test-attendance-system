@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\CorrectionStatus;
 
 class AttendanceCorrection extends Model
 {
@@ -15,6 +16,10 @@ class AttendanceCorrection extends Model
         'status',
     ];
     
+    protected $casts = [
+        'status' => CorrectionStatus::class,
+    ];
+    
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -23,5 +28,10 @@ class AttendanceCorrection extends Model
     public function breakTimeCorrections()
     {
         return $this->hasMany(BreakTimeCorrection::class);
+    }
+    
+    public function getStatusMessageAttribute(): string
+    {
+        return $this->status->getMessage();
     }
 }
