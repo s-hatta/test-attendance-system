@@ -115,11 +115,19 @@ class AttendanceController extends Controller
     /**
      * 勤怠修正申請登録
      */
-    public function store(CorrectionRequest $request)
+    public function store($id, CorrectionRequest $request)
     {
         $user = Auth::user();
         $validated = $request->validated();
-        $attendanceCorrection = $user->attendanceCorrections()->create([
+        
+        $attendance = $user->attendances()->where('id',$id)->first();
+        if( !$attendance ) {
+            $attendance = $user->attendances()->create([
+                'date' => $validated['date'],
+            ]);
+        }
+        $attendanceCorrection = $attendance->attendanceCorrections()->create([
+            'user_id' => $user->id,
             'date' => $validated['date'],
             'clock_in_at' => $validated['clock_in_at'],
             'clock_out_at' => $validated['clock_out_at'],
