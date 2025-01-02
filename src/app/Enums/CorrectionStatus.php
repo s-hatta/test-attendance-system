@@ -10,8 +10,8 @@ enum CorrectionStatus: int
     public function getMessage(): string
     {
         return match($this) {
-            self::PENDING => '申請中',
-            self::APPROVED => '申請済',
+            self::PENDING => '承認待ち',
+            self::APPROVED => '承認済み',
         };
     }
 }
