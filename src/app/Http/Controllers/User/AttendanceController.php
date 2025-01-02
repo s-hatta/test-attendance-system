@@ -61,13 +61,12 @@ class AttendanceController extends Controller
                 $attendance->total_break_time = ( $totalBreakTime > 0 )? sprintf('%d:%02d', floor($totalBreakTime / 60), $totalBreakTime % 60) : null;
                 
                 /* 勤務時間を計算 (休憩時間を除く) */
-                $totalWorkTime = 0;
                 if ($attendance->clock_in_at && $attendance->clock_out_at) {
                     $totalWorkTime = $attendance->clock_in_at->diffInMinutes($attendance->clock_out_at) - $totalBreakTime;
+                    $attendance->total_work_time = sprintf('%d:%02d', floor($totalWorkTime / 60), $totalWorkTime % 60);
+                } else {
+                    $totalWorkTime = null;
                 }
-                
-                /* viewの表示用にフォーマット変換 */
-               $attendance->total_work_time = sprintf('%d:%02d', floor($totalWorkTime / 60), $totalWorkTime % 60);
             }
             
             /* 配列に追加 */
