@@ -9,6 +9,7 @@ class AttendanceCorrection extends Model
 {
     protected $fillable = [
         'user_id',
+        'attendance_id',
         'date',
         'clock_in_at',
         'clock_out_at',
@@ -26,6 +27,11 @@ class AttendanceCorrection extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
     }
     
     public function breakTimeCorrections()
