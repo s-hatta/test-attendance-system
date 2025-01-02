@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\CorrectionStatus;
+use Carbon\Carbon;
 
 class CorrectionRequest extends FormRequest
 {
@@ -92,5 +94,22 @@ class CorrectionRequest extends FormRequest
                 }
             }
         });
+    }
+    
+    /**
+     * データ整形
+     */
+    public function validated($key = null, $default = null): array
+    {
+        $validated = parent::validated();
+        $dateStr = $validated['date_time'];
+        
+        return [
+            'date' => Carbon::createFromFormat('Y年m月d日', $dateStr)->startOfDay(),
+            'clock_in_at' => Carbon::createFromFormat('Y年m月d日 H:i', $dateStr . ' ' . $validated['clock_in']),
+            'clock_out_at' => Carbon::createFromFormat('Y年m月d日 H:i', $dateStr . ' ' . $validated['clock_out']),
+            'remark' => $validated['remark'],
+            'break_times' => $validated['break_times'] ?? [],
+        ];
     }
 }
