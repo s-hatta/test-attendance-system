@@ -22,6 +22,9 @@ class Attendance extends Model
     ];
     
     protected $casts = [
+        'date' => 'date',
+        'clock_in_at' => 'datetime',
+        'clock_out_at' => 'datetime',
         'status' => AttendanceStatus::class,
     ];
     
