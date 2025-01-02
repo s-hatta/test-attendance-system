@@ -98,10 +98,10 @@ class AttendanceController extends Controller
         
         $param = [
             'name' => $user->name,
-            'year' => $attendance->date->format('Y'),
-            'date' => $attendance->date->format('md'),
-            'clock_in' => $attendance->clock_in_at->format('Hi'),
-            'clock_out' => $attendance->clock_out_at->format('Hi'),
+            'year' => ($attendance->date)? $attendance->date->format('Y'):null,
+            'date' => ($attendance->date)? $attendance->date->format('md'):null,
+            'clock_in' => ($attendance->clock_in_at)? $attendance->clock_in_at->format('Hi'):null,
+            'clock_out' => ($attendance->clock_out_at)? $attendance->clock_out_at->format('Hi'):null,
             'break_times' => $breakTimes,
             'remark' => $attendance->remark,
         ];
