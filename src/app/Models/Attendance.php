@@ -33,6 +33,11 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
     
+    public function attendanceCorrections()
+    {
+        return $this->hasMany(AttendanceCorrection::class);
+    }
+    
     public function breakTimes()
     {
         return $this->hasMany(BreakTime::class);

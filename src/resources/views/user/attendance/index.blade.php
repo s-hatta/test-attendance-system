@@ -63,6 +63,11 @@
                                class="text-black hover:text-gray-600">
                                 詳細
                             </a>
+                        @else
+                            <a href="{{ route('user.attendance.show', ['id' => 0]) }}" 
+                               class="text-black hover:text-gray-600">
+                                詳細
+                            </a>
                         @endif
                     </td>
                 </tr>
