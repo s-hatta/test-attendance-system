@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum CorrectionStatus
+enum CorrectionStatus: int
 {
     case PENDING = 0;
     case APPROVED = 1;
