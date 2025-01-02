@@ -82,13 +82,17 @@ class AttendanceController extends Controller
     /**
      * 勤怠詳細画面表示
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         $user = Auth::user();
-        $attendance = $user->attendances()
-            ->with('breakTimes')
-            ->where('id', $id)
-            ->firstOrFail();
+        if( $id > 0 ) {
+            $attendance = $user->attendances()
+                ->with('breakTimes')
+                ->where('id', $id)
+                ->firstOrFail();
+        } else {
+            $attendance = new Attendance();
+        }
         $breakTimes = $attendance->breakTimes->map(function ($breakTime) {
             return [
                 'start' => $breakTime->start_at->format('Hi'),
