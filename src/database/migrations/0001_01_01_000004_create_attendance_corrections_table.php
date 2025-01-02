@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('attendance_corrections', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->date('date');
-            $table->timestamp('clock_in_at')->nullable();
-            $table->timestamp('clock_out_at')->nullable();
+            $table->timestamp('clock_in_at');
+            $table->timestamp('clock_out_at');
             $table->text('remark')->nullable();
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('attendance_corrections');
     }
 };

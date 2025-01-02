@@ -21,37 +21,24 @@ class AttendanceController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        $attendance = $user->attendances()->where('id',$id)->first();
-        
-        /* 勤怠記録がない場合はNotFound */
-        if(!$attendance) {
-            abort(404);
-        }
-        
-        /**
-         * 日付、時刻は4桁の数値で扱う
-         */
-        $time = strtotime($attendance->date);
-        $year = date('Y', $time);
-        $date = date('md', $time);
-        $clockIn = date('Hi', strtotime( $attendance->clock_in_at ));
-        $clockOut = date('Hi', strtotime( $attendance->clock_out_at ));
-        $inBreakTimes = $attendance->breakTimes()->get();
-        $outBreakTimes = [];
-        foreach( $inBreakTimes as $breakTime ) {
-            $outBreakTimes[] = [
-                'start' => date('Hi', strtotime( $breakTime->start_at )),
-                'end' => date('Hi', strtotime( $breakTime->end_at )),
-            
+        $attendance = $user->attendances()
+            ->with('breakTimes')
+            ->where('id', $id)
+            ->firstOrFail();
+        $breakTimes = $attendance->breakTimes->map(function ($breakTime) {
+            return [
+                'start' => $breakTime->start_at->format('Hi'),
+                'end' => $breakTime->end_at->format('Hi'),
             ];
-        }
+        })->toArray();
+        
         $param = [
             'name' => $user->name,
-            'year' => $year,
-            'date' => $date,
-            'clock_in' => $clockIn,
-            'clock_out' => $clockOut,
-            'break_times' => $outBreakTimes,
+            'year' => $attendance->date->format('Y'),
+            'date' => $attendance->date->format('md'),
+            'clock_in' => $attendance->clock_in_at->format('Hi'),
+            'clock_out' => $attendance->clock_out_at->format('Hi'),
+            'break_times' => $breakTimes,
             'remark' => $attendance->remark,
         ];
         return view('user.attendance.show', compact('id','param'));

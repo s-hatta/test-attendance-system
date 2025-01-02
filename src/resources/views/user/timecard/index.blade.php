@@ -5,7 +5,7 @@
     $statusClass = "bg-[#c8c8c8] rounded-[50px] w-[100px] h-[40px] text-[18px] font-bold text-[#696969] flex items-center justify-center";
     $buttonClockClass = "bg-[#000000] rounded-[20px] w-[221px] h-[77px] text-[32px] font-bold text-white";
     $buttonBreakClass = "bg-[#ffffff] rounded-[20px] w-[221px] h-[77px] text-[32px] font-bold text-black";
-    $statusMessage = $attendance ? $attendance->getStatusMessage() : '勤務外';
+    $statusMessage = $attendance ? $attendance->status->getMessage() : '勤務外';
 @endphp
 
 @section('content')
