@@ -30,11 +30,6 @@ class Attendance extends Model
         return $this->hasMany(BreakTime::class);
     }
     
-    public function attendanceCorrection()
-    {
-        return $this->hasOne(AttendanceCorrection::class);
-    }
-    
     public function getStatusMessage()
     {
         switch( $this->status ) {

@@ -12,7 +12,7 @@ class BreakTime extends Model
         'end_at',
     ];
     
-    public function breakTime()
+    public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }

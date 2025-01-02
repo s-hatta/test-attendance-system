@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class BreakTimeCorrection extends Model
 {
     protected $fillable = [
-        'break_time_id',
+        'attendance_correction_id',
         'start_at',
         'end_at',
     ];
     
-    public function breakTime()
+    public function attendanceCorrection()
     {
-        return $this->belongsTo(BreakTime::class);
+        return $this->belongsTo(AttendanceCorrection::class);
     }
 }
