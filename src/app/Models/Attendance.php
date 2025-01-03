@@ -48,6 +48,12 @@ class Attendance extends Model
         return $this->status->getMessage();
     }
     
+    /* DateTimeを指定 */
+    public function scopeByDate($query, $date)
+    {
+        return $query->where('date', $date);
+    }
+    
     /* 年月を指定 */
     public function scopeByMonth($query, $year, $month)
     {
