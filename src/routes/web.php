@@ -35,22 +35,23 @@ Route::name('user.')->group(function () {
 });
 
 /* 管理者用ルート */
-Route::name('admin.')->prefix('/admin')->group(function () {
-    Route::middleware('guest:admin')->group(function () {
-        Route::get('/login', [Admin\LoginController::class, 'create'])->name('login');
-        Route::post('/login', [Admin\LoginController::class, 'store']);
+Route::name('admin.')->group(function () {
+    Route::prefix('/admin')->group(function () {
+        Route::middleware('guest:admin')->group(function () {
+            Route::get('/login', [Admin\LoginController::class, 'create'])->name('login');
+            Route::post('/login', [Admin\LoginController::class, 'store']);
+        });
+        
+        Route::middleware('auth:admin')->group(function () {
+            Route::post('/logout', [Admin\LoginController::class, 'destroy'])->name('logout');
+            
+            Route::get('/attendance/list', [Admin\AttendanceController::class, 'index'])->name('attendance.index');
+            Route::get('/attendance/{id}', [Admin\AttendanceController::class, 'show'])->name('attendance.show');
+            
+            Route::get('/staff/list', [Admin\StaffController::class, 'index'])->name('staff.index');
+            Route::get('/attendance/staff/{id}', [Admin\StaffController::class, 'show'])->name('staff.show');
+        });
     });
-    
-    Route::middleware('auth:admin')->group(function () {
-        Route::post('/logout', [Admin\LoginController::class, 'destroy'])->name('logout');
-        
-        Route::get('/attendance/list', [Admin\AttendanceController::class, 'index'])->name('attendance.index');
-        Route::get('/attendance/{id}', [Admin\AttendanceController::class, 'show'])->name('attendance.show');
-        
-        Route::get('/staff/list', [Admin\StaffController::class, 'index'])->name('staff.index');
-        Route::get('/attendance/staff/{id}', [Admin\StaffController::class, 'show'])->name('staff.show');
-        
-        Route::get('/stamp_correction_request/list', [Admin\CorrectionController::class, 'index'])->name('correction.index');
-        Route::get('/stamp_correction_request/approve/{correction}', [Admin\CorrectionController::class, 'show'])->name('correction.show');
-    });
+    Route::get('/stamp_correction_request/list', [Admin\CorrectionController::class, 'index'])->name('correction.index');
+    Route::get('/stamp_correction_request/approve/{correction}', [Admin\CorrectionController::class, 'show'])->name('correction.show');
 });
