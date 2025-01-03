@@ -5,7 +5,7 @@
 <div class="max-w-[900px] mx-auto px-5 py-6">
     
     {{-- 見出し --}}
-    <h1 class="text-[30px] font-bold mb-8 pl-[20px] border-l-[8px] mt-[50px] border-black">勤怠一覧</h1>
+    <h1 class="text-[30px] font-bold mb-8 pl-[20px] border-l-[8px] mt-[50px] border-black">{{$currentDate->format('Y年m月d日')}}の勤怠</h1>
     
     {{-- 月選択ナビゲーション --}}
     <div class="bg-white rounded-[10px]">
