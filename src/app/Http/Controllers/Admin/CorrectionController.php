@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Attendance;
 use App\Models\AttendanceCorrection;
 use App\Enums\CorrectionStatus;
 
@@ -51,5 +52,39 @@ class CorrectionController extends Controller
             'remark' => $attendanceCorrection->remark,
         ];
         return view('admin.correction.show', compact('attendance_correct_request','param'));
+    }
+    
+    /**
+     * 申請承認処理
+     */
+    public function update($attendance_correct_request)
+    {
+        $attendanceCorrection = AttendanceCorrection::with('breakTimeCorrections')
+            ->where('id', $attendance_correct_request)
+            ->firstOrFail();
+        $attendance = Attendance::with('breakTimes')
+            ->where('id', $attendanceCorrection->attendance_id)
+            ->firstOrFail();
+        
+        /* 勤怠情報更新 */
+        $attendance->clock_in_at = $attendanceCorrection->clock_in_at;
+        $attendance->clock_out_at = $attendanceCorrection->clock_out_at;
+        $attendance->remark = $attendanceCorrection->remark;
+        $attendance->save();
+        
+        /* 休憩時間更新 */
+        $attendance->breakTimes()->delete();
+        foreach ($attendanceCorrection->breakTimeCorrections as $breakTimeCorrection) {
+            $attendance->breakTimes()->create([
+                'start_at' => $breakTimeCorrection->start_at,
+                'end_at' => $breakTimeCorrection->end_at
+            ]);
+        }
+        
+        /* 申請ステータスを承認済みに更新 */
+        $attendanceCorrection->status = CorrectionStatus::APPROVED->value;
+        $attendanceCorrection->save();
+        
+        return redirect()->route('correction.index');
     }
 }
