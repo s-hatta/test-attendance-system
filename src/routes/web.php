@@ -58,6 +58,7 @@ Route::name('admin.')->group(function () {
             
             Route::get('/attendance/list', [Admin\AttendanceController::class, 'index'])->name('attendance.index');
             Route::get('/attendance/{id}', [Admin\AttendanceController::class, 'show'])->name('attendance.show');
+            Route::post('/attendance/{id}', [Admin\AttendanceController::class, 'store'])->name('attendance.store');
             
             Route::get('/staff/list', [Admin\StaffController::class, 'index'])->name('staff.index');
             Route::get('/attendance/staff/{id}', [Admin\StaffController::class, 'show'])->name('staff.show');
