@@ -6,19 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AttendanceCorrection;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\CorrectionStatus;
 
 class CorrectionController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $status = $request->input('status', 0);
-        
-        $corrections = AttendanceCorrection::with('attendance')
+        $pendingCorrections = AttendanceCorrection::with('attendance','user')
             ->where('user_id', Auth::id())
-            ->where('status', $status)
-            ->orderBy('created_at', 'desc')
+            ->where('status', CorrectionStatus::PENDING->value)
+            ->orderBy('date', 'asc')
             ->get();
-            
-        return view('user.correction.index', compact('corrections','status') );
+        $approvedCorrections = AttendanceCorrection::with('attendance','user')
+            ->where('user_id', Auth::id())
+            ->where('status', CorrectionStatus::APPROVED->value)
+            ->orderBy('date', 'asc')
+            ->get();
+        
+        return view('user.correction.index', compact('pendingCorrections','approvedCorrections') );
     }
 }
