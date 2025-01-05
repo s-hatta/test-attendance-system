@@ -109,4 +109,34 @@ class AttendanceController extends Controller
         ];
         return view('admin.attendance.show', compact('id','param'));
     }
+    
+    /**
+     * 勤怠修正
+     */
+    public function store($id, CorrectionRequest $request)
+    {
+        $validated = $request->validated();
+        
+        $attendance = Attendance::with('breakTimes')
+            ->where('id', $id)
+            ->firstOrFail();
+        
+        /* 勤怠情報更新 */
+        $attendance->clock_in_at = $validated['clock_in_at'];
+        $attendance->clock_out_at = $validated['clock_out_at'];
+        $attendance->remark = $validated['remark'];
+        $attendance->save();
+        
+        /* 休憩時間更新 */
+        $attendance->breakTimes()->delete();
+        foreach( $validated['break_times'] as $breakTime ) {
+            $attendance->breakTimes()->create([
+                'start_at' => $breakTime['start'],
+                'end_at' => $breakTime['end'],
+            ]);
+        }
+        
+        $attendance->save();
+        return redirect()->route('admin.attendance.index');
+    }
 }
