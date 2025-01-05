@@ -9,6 +9,19 @@ use App\Http\Controllers\Admin;
 /* ホームページ */
 Route::get('/', [HomeController::class, 'index']);
 
+/* 一般ユーザー・管理者共通ルート */
+Route::middleware('auth:user,admin')->group(function () {
+    Route::get('/stamp_correction_request/list', function () {
+        if (Auth::guard('user')->check()) {
+            return app()->make(User\CorrectionController::class)->index();
+        }
+        if (Auth::guard('admin')->check()) {
+            return app()->make(Admin\CorrectionController::class)->index();
+        }
+        return redirect()->route('user.login');
+    })->name('correction.index');
+});
+
 /* 一般ユーザー用ルート */
 Route::name('user.')->group(function () {
     Route::middleware('guest:user')->group(function () {
@@ -29,8 +42,6 @@ Route::name('user.')->group(function () {
         Route::get('/attendance/list', [User\AttendanceController::class, 'index'])->name('attendance.index');
         Route::get('/attendance/{id}', [User\AttendanceController::class, 'show'])->name('attendance.show');
         Route::post('/attendance/{id}', [User\AttendanceController::class, 'store'])->name('attendance.store');
-        
-        Route::get('/stamp_correction_request/list', [User\CorrectionController::class, 'index'])->name('correction.index');
     });
 });
 
@@ -52,6 +63,6 @@ Route::name('admin.')->group(function () {
             Route::get('/attendance/staff/{id}', [Admin\StaffController::class, 'show'])->name('staff.show');
         });
     });
-    Route::get('/stamp_correction_request/list', [Admin\CorrectionController::class, 'index'])->name('correction.index');
-    Route::get('/stamp_correction_request/approve/{correction}', [Admin\CorrectionController::class, 'show'])->name('correction.show');
+    Route::get('/stamp_correction_request/approve/{attendance_correct_request}', [Admin\CorrectionController::class, 'show'])->name('correction.show');
+    Route::post('/stamp_correction_request/approve/{attendance_correct_request}', [Admin\CorrectionController::class, 'update'])->name('correction.update');
 });

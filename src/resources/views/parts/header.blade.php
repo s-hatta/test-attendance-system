@@ -14,7 +14,7 @@
                     {{-- 管理者用メニュー --}}
                     <a href="{{route('admin.attendance.index')}}" class="mx-5 text-2xl text-white hover:text-gray-300">勤怠一覧</a>
                     <a href="{{route('admin.staff.index')}}" class="mx-5 text-2xl text-white hover:text-gray-300">スタッフ一覧</a>
-                    <a href="{{route('admin.correction.index')}}" class="mx-5 text-2xl text-white hover:text-gray-300">申請一覧</a>
+                    <a href="{{route('correction.index')}}"  class="mx-5 text-2xl text-white hover:text-gray-300">申請一覧</a>
                     <form method="POST" action="{{ route('admin.logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="ml-5 text-2xl text-white hover:text-gray-300">ログアウト</button>
@@ -23,7 +23,7 @@
                     {{-- 一般ユーザー用メニュー --}}
                     <a href="{{route('user.timecard')}}" class="mx-5 text-2xl text-white hover:text-gray-300">勤怠</a>
                     <a href="{{route('user.attendance.index')}}" class="mx-5 text-2xl text-white hover:text-gray-300">勤怠一覧</a>
-                    <a href="{{route('user.correction.index')}}" class="mx-5 text-2xl text-white hover:text-gray-300">申請</a>
+                    <a href="{{route('correction.index')}}"  class="mx-5 text-2xl text-white hover:text-gray-300">申請</a>
                     <form method="POST" action="{{ route('user.logout') }}" class="inline">
                         @csrf
                         <button type="submit" class="ml-5 text-2xl text-white hover:text-gray-300">ログアウト</button>
