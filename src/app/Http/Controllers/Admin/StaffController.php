@@ -10,6 +10,9 @@ use Carbon\Carbon;
 
 class StaffController extends Controller
 {
+    /**
+     * スタッフ一覧画面表示
+     */
     public function index()
     {
         $users = User::select('id', 'email', 'name')->get();
