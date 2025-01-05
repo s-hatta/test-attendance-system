@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/clock.js',
                 'resources/js/formatter/*.js',
+                'resources/js/tab-switcher.js',
             ],
             refresh: true,
         }),
