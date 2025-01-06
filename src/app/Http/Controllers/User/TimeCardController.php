@@ -83,10 +83,10 @@ class TimeCardController extends Controller
         }
         
         /* 休憩開始を記録 */
-        $breakTime = new BreakTime([
+        $breakTime = BreakTime::create([
+            'attendance_id' => $attendance->id,
             'start_at' => $timestamp,
         ]);
-        $attendance->breakTime()->save($breakTime);
         
         /* 勤怠状態を更新 */
         $attendance->update(['status' => Attendance::STATUS_BREAK]);
@@ -109,7 +109,7 @@ class TimeCardController extends Controller
         }
         
         /* 休憩終了を記録 */
-        $breakTime = $attendance->breakTime()->whereNull('end_at')->latest()->first();
+        $breakTime = $attendance->breakTimes()->whereNull('end_at')->latest()->first();
         if ($breakTime) {
             $breakTime->update(['end_at' => $timestamp]);
         }
