@@ -22,13 +22,13 @@
                 
                 {{-- ボタンもしくはメッセージ --}}
                 <div class="flex justify-center mt-[87px] gap-[82px]">
-                    @if(!$attendance || $attendance->status === 0)
+                    @if(!$attendance || $attendance->status->value === 0)
                         <form method="POST" action="{{ route('user.timecard.clockIn') }}">
                             @csrf
                             <input type="hidden" name="timestamp" value="{{ now() }}">
                             <button type="submit" class="{{ $buttonClockClass }}">出勤</button>
                         </form>
-                    @elseif($attendance->status === 1)
+                    @elseif($attendance->status->value === 1)
                         <div class="flex gap-[82px]">
                             <form method="POST" action="{{ route('user.timecard.clockOut') }}">
                                 @csrf
@@ -41,13 +41,13 @@
                                 <button type="submit" class="{{ $buttonBreakClass }}">休憩入</button>
                             </form>
                         </div>
-                    @elseif($attendance->status === 2)
+                    @elseif($attendance->status->value === 2)
                         <form method="POST" action="{{ route('user.timecard.endBreak') }}">
                             @csrf
                             <input type="hidden" name="timestamp" value="{{ now() }}">
                             <button type="submit" class="{{ $buttonBreakClass }}">休憩戻</button>
                         </form>
-                    @elseif($attendance->status === 3)
+                    @elseif($attendance->status->value === 3)
                         <p class="text-[25px] font-bold">お疲れさまでした。</p>
                     @endif
                 </div>
