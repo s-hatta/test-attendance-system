@@ -93,6 +93,7 @@ class AttendanceController extends Controller
         } else {
             $attendance = new Attendance();
         }
+        
         $breakTimes = $attendance->breakTimes->map(function ($breakTime) {
             return [
                 'start' => $breakTime->start_at->format('Hi'),
@@ -109,6 +110,13 @@ class AttendanceController extends Controller
             'break_times' => $breakTimes,
             'remark' => $attendance->remark,
         ];
+        
+        /* 承認待ちの申請がある場合はフラグを追加 */
+        $attendanceCorrection = $attendance->attendanceCorrections->where('stauts',CorrectionStatus::PENDING->value)->first();
+        if( isset($attendanceCorrection ) ) {
+            $param['is_pending'] = true;
+        }
+        
         return view('user.attendance.show', compact('id','param'));
     }
     
