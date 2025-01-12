@@ -37,19 +37,20 @@ class CorrectionController extends Controller
             ->firstOrFail();
         $breakTimeCorrections = $attendanceCorrection->breakTimeCorrections->map(function ($breakTimeCorrection) {
             return [
-                'start' => $breakTimeCorrection->start_at->format('Hi'),
-                'end' => $breakTimeCorrection->end_at->format('Hi'),
+                'start' => $breakTimeCorrection->start_at->format('H:i'),
+                'end' => $breakTimeCorrection->end_at->format('H:i'),
             ];
         })->toArray();
         
         $param = [
             'name' => $attendanceCorrection->user->name,
-            'year' => ($attendanceCorrection->date)? $attendanceCorrection->date->format('Y'):null,
-            'date' => ($attendanceCorrection->date)? $attendanceCorrection->date->format('md'):null,
-            'clock_in' => ($attendanceCorrection->clock_in_at)? $attendanceCorrection->clock_in_at->format('Hi'):null,
-            'clock_out' => ($attendanceCorrection->clock_out_at)? $attendanceCorrection->clock_out_at->format('Hi'):null,
+            'year' => ($attendanceCorrection->date)? $attendanceCorrection->date->format('Y年'):null,
+            'date' => ($attendanceCorrection->date)? $attendanceCorrection->date->format('n月j日'):null,
+            'clock_in' => ($attendanceCorrection->clock_in_at)? $attendanceCorrection->clock_in_at->format('H:i'):null,
+            'clock_out' => ($attendanceCorrection->clock_out_at)? $attendanceCorrection->clock_out_at->format('H:i'):null,
             'break_times' => $breakTimeCorrections,
             'remark' => $attendanceCorrection->remark,
+            'status' => $attendanceCorrection->status,
         ];
         return view('admin.correction.show', compact('attendance_correct_request','param'));
     }
@@ -85,6 +86,6 @@ class CorrectionController extends Controller
         $attendanceCorrection->status = CorrectionStatus::APPROVED->value;
         $attendanceCorrection->save();
         
-        return redirect()->route('correction.index');
+        return redirect()->route('admin.correction.show', ['attendance_correct_request'=>$attendance_correct_request]);
     }
 }

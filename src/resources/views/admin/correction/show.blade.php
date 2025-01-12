@@ -88,12 +88,21 @@
         </div>
         {{-- 申請承認ボタン --}}
         <div class="flex justify-end space-x-4">
-            <button 
-                type="submit"
-                class="bg-black text-white my-20 px-[43px] py-[9px] rounded-[5px] text-[22px] font-bold hover:opacity-80 transition-opacity"
-            >
-                承認
-            </button>
+            @switch($param['status']->value)
+                @case(0)
+                    <button 
+                        type="submit"
+                        class="bg-black text-white my-10 px-[43px] py-[9px] rounded-[5px] text-[22px] font-bold hover:opacity-80 transition-opacity">
+                        承認
+                    </button>
+                    @break
+                @case(1)
+                    <p class="bg-[#696969] text-white my-10 px-[22px] py-[9px] rounded-[5px] text-[22px] font-bold">承認済み</p>
+                    @break
+                @default
+                    
+            @endswitch
+            
         </div>
     </form>
 </div>
