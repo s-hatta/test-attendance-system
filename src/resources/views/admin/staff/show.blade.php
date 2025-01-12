@@ -81,5 +81,18 @@
             </tbody>
         </table>
     </div>
+    
+        
+    {{-- CSV出力 --}}
+    <div class="flex justify-end space-x-4">
+        <form method="POST" action="{{ route('admin.staff.export', ['id' => Route::current()->parameter('id'), 'year' => $currentDate->year, 'month' => $currentDate->month]) }}">
+            @csrf
+            <button 
+                type="submit"
+                class="bg-black text-white my-10 px-[43px] py-[9px] rounded-[5px] text-[22px] font-bold hover:opacity-80 transition-opacity">
+                CSV出力
+            </button>
+        </form>
+    </div>
 </div>
 @endsection
