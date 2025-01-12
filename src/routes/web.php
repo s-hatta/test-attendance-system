@@ -62,6 +62,7 @@ Route::name('admin.')->group(function () {
             
             Route::get('/staff/list', [Admin\StaffController::class, 'index'])->name('staff.index');
             Route::get('/attendance/staff/{id}', [Admin\StaffController::class, 'show'])->name('staff.show');
+            Route::post('/attendance/staff/{id}', [Admin\StaffController::class, 'export'])->name('staff.export');
         });
     });
     Route::get('/stamp_correction_request/approve/{attendance_correct_request}', [Admin\CorrectionController::class, 'show'])->name('correction.show');
