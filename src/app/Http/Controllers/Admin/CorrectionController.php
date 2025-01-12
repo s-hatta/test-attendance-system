@@ -50,6 +50,7 @@ class CorrectionController extends Controller
             'clock_out' => ($attendanceCorrection->clock_out_at)? $attendanceCorrection->clock_out_at->format('H:i'):null,
             'break_times' => $breakTimeCorrections,
             'remark' => $attendanceCorrection->remark,
+            'status' => $attendanceCorrection->status,
         ];
         return view('admin.correction.show', compact('attendance_correct_request','param'));
     }
