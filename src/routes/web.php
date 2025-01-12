@@ -21,7 +21,8 @@ Route::middleware('auth:user,admin')->group(function () {
         return redirect()->route('user.login');
     })->name('correction.index');
 });
-
+Route::get('/email/verify/{id}/{hash}', [User\LoginController::class, 'verify'])->name('verification.verify');
+    
 /* 一般ユーザー用ルート */
 Route::name('user.')->group(function () {
     Route::middleware('guest:user')->group(function () {
@@ -31,7 +32,7 @@ Route::name('user.')->group(function () {
         Route::post('/login', [User\LoginController::class, 'store']);
     });
     
-    Route::middleware('auth:user')->group(function () {
+    Route::middleware('auth:user', 'verified')->group(function () {
         Route::post('/logout', [User\LoginController::class, 'destroy'])->name('logout');
         Route::get('/attendance', [User\TimeCardController::class, 'index'])->name('timecard');
         Route::post('/attendance/clock-in', [User\TimeCardController::class, 'clockIn'])->name('timecard.clockIn');

@@ -13,6 +13,10 @@
     <div class="w-full max-w-[680px] p-6 mt-10">
         <h1 class="text-center text-[36px] font-bold">ログイン</h1>
         
+        @if( session('message') )
+            <p class="text-red-500">{{session('message')}}</p>
+        @endif
+        
         <form method="POST" action="{{ route('user.login') }}" class="space-y-6">
             @csrf
             {{-- メールアドレス --}}
