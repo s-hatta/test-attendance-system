@@ -86,6 +86,6 @@ class CorrectionController extends Controller
         $attendanceCorrection->status = CorrectionStatus::APPROVED->value;
         $attendanceCorrection->save();
         
-        return redirect()->route('correction.index');
+        return redirect()->route('admin.correction.show', ['attendance_correct_request'=>$attendance_correct_request]);
     }
 }
