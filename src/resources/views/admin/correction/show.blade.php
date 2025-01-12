@@ -54,22 +54,14 @@
                 <div class="{{ $tableHeaderClass }}">休憩</div>
                 <div class="{{ $tableDataClass }}">
                     {{-- 開始時刻 --}}
-                    <input 
-                        type="text" 
-                        name="break_times[{{$loop->index}}][start]" 
-                        value="{{$breakTime['start']}}" 
-                        class="time-input {{$tableTextInputClass}}"
-                        data-original-value="{{$breakTime['start']}}"
-                    >
+                    <p class="{{$tableTextInputClass}} time-input">
+                        {{$breakTime['start']}}
+                    </p>
                     <span class="{{$tableDataSpanClass}}">〜</span>
                     {{-- 終了時刻 --}}
-                    <input 
-                        type="text" 
-                        name="break_times[{{$loop->index}}][end]" 
-                        value="{{$breakTime['end']}}" 
-                        class="time-input {{$tableTextInputClass}}"
-                        data-original-value="{{$breakTime['end']}}"
-                    >
+                    <p class="{{$tableTextInputClass}} time-input">
+                        {{$breakTime['end']}}
+                    </p>
                 </div>
             </div>
             @endforeach
