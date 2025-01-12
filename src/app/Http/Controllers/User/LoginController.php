@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Routing\Pipeline;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Fortify\Actions\AttemptToAuthenticate;
 use Laravel\Fortify\Actions\CanonicalizeUsername;
 use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
@@ -17,6 +18,8 @@ use Laravel\Fortify\Contracts\LogoutResponse;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Fortify;
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use DateTime;
 
 class LoginController extends Controller
 {
@@ -107,5 +110,18 @@ class LoginController extends Controller
         }
 
         return app(LogoutResponse::class);
+    }
+    
+    public function verify($id, Request $request)
+    {
+        $user = User::where('id',$id)->first();
+        if( is_null($user) )
+            {
+            return redirect()->route('user.login');
+            }
+        $user->email_verified_at = new DateTime();
+        $user->save();
+        Auth::login($user);
+        return redirect()->route('user.timecard');
     }
 }
