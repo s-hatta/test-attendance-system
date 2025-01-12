@@ -14,6 +14,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\RegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -22,7 +23,16 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        if( request()->is('admin/*') ) {
+            /* DoNothing */
+        } else {
+            $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+                public function toResponse($request)
+                {
+                    return redirect()->route('user.login')->with(['message'=>'送られたメール本文内のURLをクリックして登録を完了してください']);
+                }
+            });
+        }
     }
 
     /**
@@ -48,7 +58,7 @@ class FortifyServiceProvider extends ServiceProvider
                 return view('admin.auth.login')->with(['message'=>'送られたメール本文内のURLをクリックして登録を完了してください']);
             } else {
                 auth()->logout();
-                return view('user.auth.login')->with(['message'=>'送られたメール本文内のURLをクリックして登録を完了してください']);
+                return redirect()->route('user.login')->with(['message'=>'送られたメール本文内のURLをクリックして登録を完了してください']);
             }
         });
 
