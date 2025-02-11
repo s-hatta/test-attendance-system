@@ -20,22 +20,22 @@ class AttendanceController extends Controller
     public function index(Request $request)
     {
         Carbon::setLocale('ja');
-        
+
         /* 表示する年月日を決定 (パラメータがない場合は当日) */
         $year = $request->input('year', now()->year);
         $month = $request->input('month', now()->month);
         $day = $request->input('day', now()->day);
         $currentDate = Carbon::create($year, $month, $day);
-        
+
         /* 前日と翌日 */
         $prevDate = $currentDate->copy()->subDay();
         $nextDate = $currentDate->copy()->addDay();
-        
+
         /* 指定日の勤怠データを取得 */
         $attendances = Attendance::with('breakTimes','user')
             ->byDate($currentDate)
             ->get();
-        
+
         $dates = collect();
         foreach( $attendances as $attendance ) {
             /* 休憩時間の合計を計算 */
@@ -45,7 +45,7 @@ class AttendanceController extends Controller
                 $totalBreakTime += $breakTime->start_at->diffInMinutes( $breakTime->end_at );
             }
             $attendance->total_break_time = ( $totalBreakTime > 0 )? sprintf('%d:%02d', floor($totalBreakTime / 60), $totalBreakTime % 60) : null;
-            
+
             /* 勤務時間を計算 (休憩時間を除く) */
             if ($attendance->clock_in_at && $attendance->clock_out_at) {
                 $totalWorkTime = $attendance->clock_in_at->diffInMinutes($attendance->clock_out_at) - $totalBreakTime;
@@ -53,17 +53,17 @@ class AttendanceController extends Controller
             } else {
                 $totalWorkTime = null;
             }
-            
+
             /* 配列に追加 */
             $dates->push([
                 'date' => $currentDate->copy(),
                 'attendance' => $attendance,
             ]);
         }
-        
+
         return view('admin.attendance.index', compact('dates', 'currentDate', 'prevDate', 'nextDate'));
     }
-    
+
     /**
      * 勤怠詳細画面表示
      */
@@ -87,7 +87,7 @@ class AttendanceController extends Controller
             ];
             return view('admin.attendance.show', compact('id','param'));
         }
-        
+
         $attendance = Attendance::with('breakTimes')
             ->where('id', $id)
             ->firstOrFail();
@@ -97,7 +97,7 @@ class AttendanceController extends Controller
                 'end' => $breakTime->end_at->format('Hi'),
             ];
         })->toArray();
-        
+
         $param = [
             'name' => $attendance->user->name,
             'year' => ($attendance->date)? $attendance->date->format('Y'):null,
@@ -109,24 +109,24 @@ class AttendanceController extends Controller
         ];
         return view('admin.attendance.show', compact('id','param'));
     }
-    
+
     /**
      * 勤怠修正
      */
     public function store($id, CorrectionRequest $request)
     {
         $validated = $request->validated();
-        
+
         $attendance = Attendance::with('breakTimes')
             ->where('id', $id)
             ->firstOrFail();
-        
+
         /* 勤怠情報更新 */
         $attendance->clock_in_at = $validated['clock_in_at'];
         $attendance->clock_out_at = $validated['clock_out_at'];
         $attendance->remark = $validated['remark'];
         $attendance->save();
-        
+
         /* 休憩時間更新 */
         $attendance->breakTimes()->delete();
         foreach( $validated['break_times'] as $breakTime ) {
@@ -135,7 +135,7 @@ class AttendanceController extends Controller
                 'end_at' => $breakTime['end'],
             ]);
         }
-        
+
         $attendance->save();
         return redirect()->route('admin.attendance.index');
     }

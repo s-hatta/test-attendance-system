@@ -11,12 +11,12 @@ class BreakTimeCorrection extends Model
         'start_at',
         'end_at',
     ];
-    
+
     protected $casts = [
         'start_at' => 'datetime',
         'end_at' => 'datetime',
     ];
-    
+
     public function attendanceCorrection()
     {
         return $this->belongsTo(AttendanceCorrection::class);

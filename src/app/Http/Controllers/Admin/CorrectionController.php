@@ -23,10 +23,10 @@ class CorrectionController extends Controller
             ->where('status', CorrectionStatus::APPROVED->value)
             ->orderBy('date', 'asc')
             ->get();
-        
+
         return view('admin.correction.index', compact('pendingCorrections','approvedCorrections') );
     }
-    
+
     /**
      * 申請承認画面表示
      */
@@ -41,7 +41,7 @@ class CorrectionController extends Controller
                 'end' => $breakTimeCorrection->end_at->format('H:i'),
             ];
         })->toArray();
-        
+
         $param = [
             'name' => $attendanceCorrection->user->name,
             'year' => ($attendanceCorrection->date)? $attendanceCorrection->date->format('Y年'):null,
@@ -54,7 +54,7 @@ class CorrectionController extends Controller
         ];
         return view('admin.correction.show', compact('attendance_correct_request','param'));
     }
-    
+
     /**
      * 申請承認処理
      */
@@ -66,13 +66,13 @@ class CorrectionController extends Controller
         $attendance = Attendance::with('breakTimes')
             ->where('id', $attendanceCorrection->attendance_id)
             ->firstOrFail();
-        
+
         /* 勤怠情報更新 */
         $attendance->clock_in_at = $attendanceCorrection->clock_in_at;
         $attendance->clock_out_at = $attendanceCorrection->clock_out_at;
         $attendance->remark = $attendanceCorrection->remark;
         $attendance->save();
-        
+
         /* 休憩時間更新 */
         $attendance->breakTimes()->delete();
         foreach ($attendanceCorrection->breakTimeCorrections as $breakTimeCorrection) {
@@ -81,11 +81,11 @@ class CorrectionController extends Controller
                 'end_at' => $breakTimeCorrection->end_at
             ]);
         }
-        
+
         /* 申請ステータスを承認済みに更新 */
         $attendanceCorrection->status = CorrectionStatus::APPROVED->value;
         $attendanceCorrection->save();
-        
+
         return redirect()->route('admin.correction.show', ['attendance_correct_request'=>$attendance_correct_request]);
     }
 }

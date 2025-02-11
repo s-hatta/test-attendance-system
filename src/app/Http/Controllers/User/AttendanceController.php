@@ -20,18 +20,18 @@ class AttendanceController extends Controller
     public function index(Request $request)
     {
         Carbon::setLocale('ja');
-        
+
         $user = Auth::user();
-        
+
         /* 表示する年月を決定 (パラメータがない場合は当月) */
         $year = $request->input('year', now()->year);
         $month = $request->input('month', now()->month);
         $currentDate = Carbon::create($year, $month, 1);
-        
+
         /* 前月と翌月 */
         $prevMonth = $currentDate->copy()->subMonth();
         $nextMonth = $currentDate->copy()->addMonth();
-        
+
         /* 指定月の勤怠データを取得 */
         $attendances = $user->attendances()
             ->with('breakTimes')
@@ -40,7 +40,7 @@ class AttendanceController extends Controller
             ->keyBy( function( $attendance ) {
                 return $attendance->date->format('Y-m-d');
             });
-        
+
         /* 月の始まりから終わりまでの配列を作成 */
         $dates = collect();
         $startDate = $currentDate->copy()->startOfMonth();
@@ -48,10 +48,10 @@ class AttendanceController extends Controller
         for( $date = $startDate; $date <= $endDate; $date->addDay( )) {
             $dateKey = $date->format('Y-m-d');
             $attendance = $attendances->get($dateKey);
-            
+
             /* 勤怠データがあれば格納 */
             if( $attendance ) {
-                
+
                 /* 休憩時間の合計を計算 */
                 $totalBreakTime = 0;
                 foreach( $attendance->breakTimes as $breakTime ) {
@@ -59,7 +59,7 @@ class AttendanceController extends Controller
                     $totalBreakTime += $breakTime->start_at->diffInMinutes( $breakTime->end_at );
                 }
                 $attendance->total_break_time = ( $totalBreakTime > 0 )? sprintf('%d:%02d', floor($totalBreakTime / 60), $totalBreakTime % 60) : null;
-                
+
                 /* 勤務時間を計算 (休憩時間を除く) */
                 if ($attendance->clock_in_at && $attendance->clock_out_at) {
                     $totalWorkTime = $attendance->clock_in_at->diffInMinutes($attendance->clock_out_at) - $totalBreakTime;
@@ -68,17 +68,17 @@ class AttendanceController extends Controller
                     $totalWorkTime = null;
                 }
             }
-            
+
             /* 配列に追加 */
             $dates->push([
                 'date' => $date->copy(),
                 'attendance' => $attendance
             ]);
         }
-        
+
         return view('user.attendance.index', compact('dates', 'currentDate', 'prevMonth', 'nextMonth'));
     }
-    
+
     /**
      * 勤怠詳細画面表示
      */
@@ -93,14 +93,14 @@ class AttendanceController extends Controller
         } else {
             $attendance = new Attendance();
         }
-        
+
         $breakTimes = $attendance->breakTimes->map(function ($breakTime) {
             return [
                 'start' => $breakTime->start_at->format('Hi'),
                 'end' => $breakTime->end_at->format('Hi'),
             ];
         })->toArray();
-        
+
         $param = [
             'name' => $user->name,
             'year' => ($attendance->date)? $attendance->date->format('Y'):null,
@@ -110,16 +110,16 @@ class AttendanceController extends Controller
             'break_times' => $breakTimes,
             'remark' => $attendance->remark,
         ];
-        
+
         /* 承認待ちの申請がある場合はフラグを追加 */
         $attendanceCorrection = $attendance->attendanceCorrections->where('stauts',CorrectionStatus::PENDING->value)->first();
         if( isset($attendanceCorrection ) ) {
             $param['is_pending'] = true;
         }
-        
+
         return view('user.attendance.show', compact('id','param'));
     }
-    
+
     /**
      * 勤怠修正申請登録
      */
@@ -127,7 +127,7 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
         $validated = $request->validated();
-        
+
         $attendance = $user->attendances()->where('id',$id)->first();
         if( !$attendance ) {
             $attendance = $user->attendances()->create([
@@ -142,7 +142,7 @@ class AttendanceController extends Controller
             'status' => CorrectionStatus::PENDING->value,
             'remark' => $validated['remark'],
         ]);
-        
+
         foreach( $validated['break_times'] as $breakTime ) {
             $attendanceCorrection->breakTimeCorrections()->create([
                 'start_at' => $breakTime['start'],
