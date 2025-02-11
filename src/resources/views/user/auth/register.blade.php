@@ -12,7 +12,7 @@
 <div class="flex justify-center">
     <div class="w-full max-w-[680px] p-6 mt-10">
         <h1 class="text-center text-[36px] font-bold">会員登録</h1>
-        
+
         <form method="POST" action="{{ route('user.register') }}" class="space-y-6">
             @csrf
             {{-- 名前 --}}
@@ -31,12 +31,12 @@
             <div>
                 <label class="{{$labelClass}}">パスワード</label>
                 <input type="password" name="password" class="{{$inputClass}}">
-                <p class="{{$alermClass}}">@error('password'){{ $message }}@enderror</p>
             </div>
             {{-- パスワード確認 --}}
             <div>
                 <label class="{{$labelClass}}">パスワード確認</label>
                 <input type="password" name="password_confirmation" class="{{$inputClass}}">
+                <p class="{{$alermClass}}">@error('password'){{ $message }}@enderror</p>
             </div>
             {{-- ログインボタン --}}
             <div>
@@ -45,7 +45,7 @@
                 </button>
             </div>
         </form>
-        
+
         {{-- ログインページへのリンク --}}
         <div class="text-center text-[20px] text-[#0073cc] mt-8">
             <a href="{{route('user.login')}}">ログインはこちら</a>
