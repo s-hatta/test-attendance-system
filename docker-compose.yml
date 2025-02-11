@@ -44,9 +44,6 @@ services:
             - "1025:1025" # SMTPポート
             - "8025:8025" # Web UI用ポート
 
-    selenium:
-        image: selenium/standalone-chrome:latest
-
     vite:
         build: ./docker/php
         volumes:
