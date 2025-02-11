@@ -19,7 +19,7 @@ class AttendancesTableSeeder extends Seeder
         $users = User::all();
         
         foreach( $users as $user ) {
-            $dt = Carbon::now()->subDay(10);
+            $dt = Carbon::now()->subDay(11);
             
             for( $ix = 10; $ix > 0; $ix-- ) {
                 $dt->addDay(1);
