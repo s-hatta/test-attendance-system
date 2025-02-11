@@ -3,16 +3,16 @@
 
 @section('content')
 <div class="max-w-[900px] mx-auto px-5 py-6">
-    
+
     {{-- 見出し --}}
     <h1 class="text-[30px] font-bold mb-8 pl-[20px] border-l-[8px] mt-[50px] border-black">{{$currentDate->format('Y年m月d日')}}の勤怠</h1>
-    
+
     {{-- 月選択ナビゲーション --}}
     <div class="bg-white rounded-[10px]">
     <div class="flex items-center px-6 py-4">
         {{-- 前日リンク用の固定幅のコンテナ --}}
         <div class="w-[64px]">
-            <a href="{{ route('admin.attendance.index', ['year' => $prevDate->year, 'month' => $prevDate->month, 'day' => $prevDate->day]) }}" 
+            <a href="{{ route('admin.attendance.index', ['year' => $prevDate->year, 'month' => $prevDate->month, 'day' => $prevDate->day]) }}"
                class="text-[#737373] hover:text-black text-[16px] font-bold">
                 ← 前日
             </a>
@@ -20,7 +20,7 @@
 
         {{-- 日付表示 - flex-1で残りの空間を占有し、text-centerで中央寄せ --}}
         <div class="flex-1 text-center text-[20px] font-bold">
-            {{ $currentDate->format('Y/m/d') }}
+            📅 {{ $currentDate->format('Y/m/d') }}
         </div>
 
         {{-- 翌日リンク用の固定幅のコンテナ --}}
@@ -70,12 +70,12 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         @if($dateData['attendance'])
-                            <a href="{{ route('admin.attendance.show', ['id' => $dateData['attendance']->id]) }}" 
+                            <a href="{{ route('admin.attendance.show', ['id' => $dateData['attendance']->id]) }}"
                                class="text-black hover:text-gray-600">
                                 詳細
                             </a>
                         @else
-                            <a href="{{ route('admin.attendance.show', ['id' => 0]) }}" 
+                            <a href="{{ route('admin.attendance.show', ['id' => 0]) }}"
                                class="text-black hover:text-gray-600">
                                 詳細
                             </a>
