@@ -22,7 +22,7 @@ class CorrectionController extends Controller
             ->where('status', CorrectionStatus::APPROVED->value)
             ->orderBy('date', 'asc')
             ->get();
-        
+
         return view('user.correction.index', compact('pendingCorrections','approvedCorrections') );
     }
 }

@@ -16,29 +16,29 @@ class AttendanceCorrection extends Model
         'remark',
         'status',
     ];
-    
+
     protected $casts = [
         'date' => 'date',
         'clock_in_at' => 'datetime',
         'clock_out_at' => 'datetime',
         'status' => CorrectionStatus::class,
     ];
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function attendance()
     {
         return $this->belongsTo(Attendance::class);
     }
-    
+
     public function breakTimeCorrections()
     {
         return $this->hasMany(BreakTimeCorrection::class);
     }
-    
+
     public function getStatusMessageAttribute(): string
     {
         return $this->status->getMessage();

@@ -6,7 +6,7 @@ enum CorrectionStatus: int
 {
     case PENDING = 0;
     case APPROVED = 1;
-    
+
     public function getMessage(): string
     {
         return match($this) {

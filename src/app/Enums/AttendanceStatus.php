@@ -8,7 +8,7 @@ enum AttendanceStatus: int
     case WORKING = 1;
     case BREAK = 2;
     case LEFT = 3;
-    
+
     public function getMessage(): string
     {
         return match($this) {
